@@ -88,6 +88,8 @@ export const StudyPage: React.FC = () => {
         </button>
       </div>
 
+      <div className="flex flex-wrap gap-2"><Link to="/study/today" className="linear-btn-secondary inline-flex">Open Study Today <ArrowRight className="w-3.5 h-3.5" /></Link><Link to="/study/history" className="linear-btn-secondary inline-flex">Prompt History</Link></div>
+
       {showCreate && (
         <form onSubmit={handleCreate} className="linear-card p-5 sm:p-6 space-y-4 border-teal-500/20">
           <div className="flex items-center justify-between gap-3">

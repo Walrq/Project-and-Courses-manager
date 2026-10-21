@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { Link } from 'react-router-dom';
 import { db, type Part, type PartStep, type Response, type Snippet } from '../db/schema';
 import { partRepo } from '../db/repos/partRepo';
 import { promptRepo } from '../db/repos/promptRepo';
@@ -626,6 +627,8 @@ Please address the feedback while maintaining consistency with previous work.`;
             partId={todayPart.id}
             sectionId={todayPart.sectionId || undefined}
           />
+
+          <Link to="/history" className="linear-btn-secondary !text-xs">Prompt history</Link>
 
           <button
             onClick={handleTogglePartDone}

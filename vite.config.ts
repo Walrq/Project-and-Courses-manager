@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: './',
+  base: '/Project-and-Courses-manager/',
   plugins: [
     react(),
     VitePWA({
@@ -17,8 +17,8 @@ export default defineConfig({
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'any',
-        scope: './',
-        start_url: './',
+        scope: '/Project-and-Courses-manager/',
+        start_url: '/Project-and-Courses-manager/',
         icons: [
           {
             src: 'icons/icon-192.png',

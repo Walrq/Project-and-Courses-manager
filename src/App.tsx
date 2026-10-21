@@ -16,6 +16,8 @@ import { TrashPage } from './pages/TrashPage';
 import { HomePage } from './pages/HomePage';
 import { StudyPage } from './pages/StudyPage';
 import { StudyItemPage } from './pages/StudyItemPage';
+import { StudyTodayPage } from './pages/StudyTodayPage';
+import { StudyHistoryPage } from './pages/StudyHistoryPage';
 
 export function App() {
   const { theme, setInstallPrompt } = useUIStore();
@@ -57,6 +59,9 @@ export function App() {
           <Route path="templates" element={<TemplatesPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="study" element={<StudyPage />} />
+          <Route path="study/today" element={<StudyTodayPage />} />
+          <Route path="study/history" element={<StudyHistoryPage />} />
+          <Route path="history" element={<StudyHistoryPage />} />
           <Route path="study/:id" element={<StudyItemPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

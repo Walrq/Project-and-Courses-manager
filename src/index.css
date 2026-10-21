@@ -61,3 +61,16 @@
   @apply px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-neutral-100 dark:bg-white/[0.06] border border-neutral-200 dark:border-white/[0.1] text-neutral-500 dark:text-[#8a8f98];
 }
 
+/* Shared textarea treatment for Study Module copy/paste dialogs. */
+.study-textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(229 229 229);
+  background: white;
+  color: #171717;
+  font-size: 0.75rem;
+  outline: none;
+}
+.study-textarea:focus { border-color: rgb(20 184 166); }
+.dark .study-textarea { border-color: rgb(255 255 255 / 0.08); background: #14161f; color: #f7f8f8; }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db/schema';
@@ -12,12 +12,11 @@ import {
   Calendar,
   BrainCircuit,
   Link2,
-  ArrowRight,
   X,
-  CornerDownLeft,
   Terminal,
   Keyboard,
   HelpCircle,
+  BookOpen,
 } from 'lucide-react';
 
 interface Props {
@@ -27,7 +26,10 @@ interface Props {
 
 type PaletteItem =
   | { kind: 'command'; command: CommandDef }
-  | { kind: 'search'; item: SearchResultItem };
+  | { kind: 'search'; item: SearchResultItem }
+  | { kind: 'study'; item: { id: string; title: string; subtitle: string; targetUrl: string } };
+
+const EMPTY: never[] = [];
 
 export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -37,11 +39,16 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
 
   // Live query all searchable entities
-  const projects = useLiveQuery(() => db.projects.filter((p) => !p.deletedAt).toArray(), []) || [];
-  const sections = useLiveQuery(() => db.sections.filter((s) => !s.deletedAt).toArray(), []) || [];
-  const parts = useLiveQuery(() => db.parts.filter((p) => !p.deletedAt).toArray(), []) || [];
-  const decisions = useLiveQuery(() => db.decisions.filter((d) => !d.deletedAt).toArray(), []) || [];
-  const links = useLiveQuery(() => db.links.filter((l) => !l.deletedAt).toArray(), []) || [];
+  const projects = useLiveQuery(() => db.projects.filter((p) => !p.deletedAt).toArray(), []) || EMPTY;
+  const sections = useLiveQuery(() => db.sections.filter((s) => !s.deletedAt).toArray(), []) || EMPTY;
+  const parts = useLiveQuery(() => db.parts.filter((p) => !p.deletedAt).toArray(), []) || EMPTY;
+  const decisions = useLiveQuery(() => db.decisions.filter((d) => !d.deletedAt).toArray(), []) || EMPTY;
+  const links = useLiveQuery(() => db.links.filter((l) => !l.deletedAt).toArray(), []) || EMPTY;
+  const studyItems = useLiveQuery(() => db.study_items.toArray(), []) || EMPTY;
+  const studyUnits = useLiveQuery(() => db.study_units.toArray(), []) || EMPTY;
+  const studyTopics = useLiveQuery(() => db.study_topics.toArray(), []) || EMPTY;
+  const studyCards = useLiveQuery(() => db.study_cards.toArray(), []) || EMPTY;
+  const studyQuizzes = useLiveQuery(() => db.study_quizzes.toArray(), []) || EMPTY;
 
   // Register standard system commands
   useEffect(() => {
@@ -102,6 +109,8 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
         category: 'navigation',
         run: () => navigate('/settings'),
       },
+      { id: 'nav_study', title: 'Open Study Module', keywords: ['study', 'course', 'subject', 'syllabus'], category: 'navigation', run: () => navigate('/study') },
+      { id: 'nav_study_today', title: 'Open Study Today', keywords: ['study', 'today', 'revision', 'flashcards'], category: 'navigation', run: () => navigate('/study/today') },
       {
         id: 'show_shortcuts',
         title: 'Show Keyboard Shortcuts (?)',
@@ -148,6 +157,28 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
     return executeSearch(searchIndex, query, 8);
   }, [searchIndex, query, projects]);
 
+  const studySearchResults = useMemo(() => {
+    const term = query.trim().toLocaleLowerCase();
+    if (!term) return [];
+    const results: Array<{ id: string; title: string; subtitle: string; targetUrl: string; score: number }> = [];
+    const itemMap = new Map(studyItems.flatMap((item) => item.id ? [[item.id, item] as const] : []));
+    const add = (id: string, itemId: number, title: string, subtitle: string, content: string) => {
+      const item = itemMap.get(itemId);
+      if (!item || item.archived) return;
+      const text = `${title} ${subtitle} ${content} ${item.name} ${(item.tags || []).join(' ')}`.toLocaleLowerCase();
+      if (text.includes(term)) results.push({ id, title, subtitle: `${item.name} · ${subtitle}`, targetUrl: `/study/${itemId}`, score: title.toLocaleLowerCase().includes(term) ? 3 : 1 });
+    };
+    studyItems.forEach((item) => { if (item.id) add(`study-item-${item.id}`, item.id, item.name, item.type, `${item.goal || ''} ${item.syllabus || ''} ${(item.tags || []).join(' ')}`); });
+    studyUnits.forEach((unit) => add(`study-unit-${unit.id}`, unit.itemId, unit.title, 'Unit', ''));
+    studyTopics.forEach((topic) => add(`study-topic-${topic.id}`, topic.itemId, topic.title, 'Topic note', `${topic.notes || ''} ${(topic.tags || []).join(' ')}`));
+    studyCards.forEach((card) => add(`study-card-${card.id}`, card.itemId, card.front, 'Flashcard', `${card.back} ${(card.tags || []).join(' ')}`));
+    studyQuizzes.forEach((quiz) => quiz.questions.forEach((question, index) => {
+      const title = typeof question.question === 'string' ? question.question : `Question ${index + 1}`;
+      add(`study-quiz-${quiz.itemId}-${index}`, quiz.itemId, title, 'Quiz question', String(question.explanation || ''));
+    }));
+    return results.sort((a, b) => b.score - a.score).slice(0, 8);
+  }, [query, studyItems, studyUnits, studyTopics, studyCards, studyQuizzes]);
+
   // Combined palette items
   const combinedItems: PaletteItem[] = useMemo(() => {
     const items: PaletteItem[] = [];
@@ -157,8 +188,20 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
     for (const s of searchResults) {
       items.push({ kind: 'search', item: s });
     }
+    for (const s of studySearchResults) items.push({ kind: 'study', item: s });
     return items;
-  }, [matchedCommands, searchResults]);
+  }, [matchedCommands, searchResults, studySearchResults]);
+
+  const executeItem = useCallback((item: PaletteItem) => {
+    if (item.kind === 'command') {
+      commandRegistry.recordCommandUsage(item.command.id);
+      onClose();
+      item.command.run();
+    } else {
+      onClose();
+      navigate(item.item.targetUrl);
+    }
+  }, [navigate, onClose]);
 
   // Auto focus input on open
   useEffect(() => {
@@ -203,18 +246,7 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, combinedItems, selectedIndex, showShortcutsHelp, query]);
-
-  const executeItem = (item: PaletteItem) => {
-    if (item.kind === 'command') {
-      commandRegistry.recordCommandUsage(item.command.id);
-      onClose();
-      item.command.run();
-    } else {
-      onClose();
-      navigate(item.item.targetUrl);
-    }
-  };
+  }, [isOpen, combinedItems, selectedIndex, showShortcutsHelp, query, onClose, executeItem]);
 
   if (!isOpen) return null;
 
@@ -319,6 +351,12 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
                   );
                 }
 
+                if (entry.kind === 'study') {
+                  const study = entry.item;
+                  return <div key={`study-${study.id}`} onClick={() => executeItem(entry)} onMouseEnter={() => setSelectedIndex(idx)} className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${isSelected ? 'bg-white/[0.08] text-white' : 'hover:bg-white/[0.04] text-[#8a8f98] hover:text-[#f7f8f8]'}`}>
+                    <div className="flex items-center gap-3"><div className="p-1 rounded bg-teal-500/10 border border-teal-500/20"><BookOpen className="w-3.5 h-3.5 text-teal-400" /></div><div><div className="text-xs font-medium text-[#f7f8f8]">{study.title}</div><div className="text-[10px] text-[#62666d]">{study.subtitle}</div></div></div><span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-300">study</span>
+                  </div>;
+                }
                 const s = entry.item;
                 return (
                   <div

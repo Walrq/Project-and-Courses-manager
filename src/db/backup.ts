@@ -32,6 +32,16 @@ const BackupPayloadSchema = z.object({
     repoFiles: z.array(z.any()).optional().default([]),
     devLog: z.array(z.any()).optional().default([]),
     settings: z.array(z.any()),
+    study_items: z.array(z.any()).optional().default([]),
+    study_units: z.array(z.any()).optional().default([]),
+    study_topics: z.array(z.any()).optional().default([]),
+    study_sessions: z.array(z.any()).optional().default([]),
+    study_memory: z.array(z.any()).optional().default([]),
+    study_cards: z.array(z.any()).optional().default([]),
+    study_quizzes: z.array(z.any()).optional().default([]),
+    study_logs: z.array(z.any()).optional().default([]),
+    study_resources: z.array(z.any()).optional().default([]),
+    study_response_history: z.array(z.any()).optional().default([]),
   }),
 });
 
@@ -66,6 +76,16 @@ export async function exportDatabaseToJSON(): Promise<string> {
     repoFiles,
     devLog,
     settings,
+    studyItems,
+    studyUnits,
+    studyTopics,
+    studySessions,
+    studyMemory,
+    studyCards,
+    studyQuizzes,
+    studyLogs,
+    studyResources,
+    studyResponseHistory,
   ] = await Promise.all([
     db.projects.toArray(),
     db.links.toArray(),
@@ -94,10 +114,20 @@ export async function exportDatabaseToJSON(): Promise<string> {
     db.repoFiles.toArray(),
     db.devLog.toArray(),
     db.settings.toArray(),
+    db.study_items.toArray(),
+    db.study_units.toArray(),
+    db.study_topics.toArray(),
+    db.study_sessions.toArray(),
+    db.study_memory.toArray(),
+    db.study_cards.toArray(),
+    db.study_quizzes.toArray(),
+    db.study_logs.toArray(),
+    db.study_resources.toArray(),
+    db.study_response_history.toArray(),
   ]);
 
   const payload: BackupPayload = {
-    version: 3,
+    version: 5,
     exportedAt: new Date().toISOString(),
     data: {
       projects,
@@ -127,6 +157,16 @@ export async function exportDatabaseToJSON(): Promise<string> {
       repoFiles,
       devLog,
       settings,
+      study_items: studyItems,
+      study_units: studyUnits,
+      study_topics: studyTopics,
+      study_sessions: studySessions,
+      study_memory: studyMemory,
+      study_cards: studyCards,
+      study_quizzes: studyQuizzes,
+      study_logs: studyLogs,
+      study_resources: studyResources,
+      study_response_history: studyResponseHistory,
     },
   };
 
@@ -195,6 +235,16 @@ export async function restoreDatabaseFromJSON(jsonString: string): Promise<{ suc
         db.repoFiles,
         db.devLog,
         db.settings,
+        db.study_items,
+        db.study_units,
+        db.study_topics,
+        db.study_sessions,
+        db.study_memory,
+        db.study_cards,
+        db.study_quizzes,
+        db.study_logs,
+        db.study_resources,
+        db.study_response_history,
       ],
       async () => {
         // Clear all existing data
@@ -226,6 +276,16 @@ export async function restoreDatabaseFromJSON(jsonString: string): Promise<{ suc
           db.repoFiles.clear(),
           db.devLog.clear(),
           db.settings.clear(),
+          db.study_items.clear(),
+          db.study_units.clear(),
+          db.study_topics.clear(),
+          db.study_sessions.clear(),
+          db.study_memory.clear(),
+          db.study_cards.clear(),
+          db.study_quizzes.clear(),
+          db.study_logs.clear(),
+          db.study_resources.clear(),
+          db.study_response_history.clear(),
         ]);
 
         // Bulk insert restored data
@@ -257,6 +317,16 @@ export async function restoreDatabaseFromJSON(jsonString: string): Promise<{ suc
           data.repoFiles && data.repoFiles.length > 0 ? db.repoFiles.bulkAdd(data.repoFiles) : Promise.resolve(),
           data.devLog && data.devLog.length > 0 ? db.devLog.bulkAdd(data.devLog) : Promise.resolve(),
           db.settings.bulkAdd(data.settings),
+          data.study_items.length ? db.study_items.bulkAdd(data.study_items) : Promise.resolve(),
+          data.study_units.length ? db.study_units.bulkAdd(data.study_units) : Promise.resolve(),
+          data.study_topics.length ? db.study_topics.bulkAdd(data.study_topics) : Promise.resolve(),
+          data.study_sessions.length ? db.study_sessions.bulkAdd(data.study_sessions) : Promise.resolve(),
+          data.study_memory.length ? db.study_memory.bulkAdd(data.study_memory) : Promise.resolve(),
+          data.study_cards.length ? db.study_cards.bulkAdd(data.study_cards) : Promise.resolve(),
+          data.study_quizzes.length ? db.study_quizzes.bulkAdd(data.study_quizzes) : Promise.resolve(),
+          data.study_logs.length ? db.study_logs.bulkAdd(data.study_logs) : Promise.resolve(),
+          data.study_resources.length ? db.study_resources.bulkAdd(data.study_resources) : Promise.resolve(),
+          data.study_response_history.length ? db.study_response_history.bulkAdd(data.study_response_history) : Promise.resolve(),
         ]);
       }
     );

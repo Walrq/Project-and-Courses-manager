@@ -317,6 +317,9 @@ export interface StudyItem {
   goal?: string;
   level?: string;
   hoursPerDay?: number;
+  planStartDate?: string;
+  restWeekdays?: number[];
+  revisionIntervals?: number[];
   platform?: string;
   instructor?: string;
   url?: string;
@@ -327,6 +330,7 @@ export interface StudyItem {
   examDate?: string;
   targetScore?: string;
   weakAreas?: string;
+  tags?: string[];
   createdAt: string;
   archived: number;
 }
@@ -346,6 +350,7 @@ export interface StudyTopic {
   title: string;
   minutes: number;
   status: 'not_started' | 'learning' | 'done' | 'needs_revision';
+  sessionType?: 'learn' | 'practice' | 'revise' | 'mock_test';
   order: number;
   pageStart?: number;
   pageEnd?: number;
@@ -362,6 +367,11 @@ export interface StudySession {
   plannedMinutes: number;
   actualMinutes?: number;
   done: number;
+  spacedReview?: 1;
+  reviewStage?: number;
+  reviewInterval?: number;
+  reviewEase?: number;
+  reviewRating?: 'forgot' | 'hard' | 'good' | 'easy';
 }
 
 export interface StudyMemory {
@@ -371,6 +381,7 @@ export interface StudyMemory {
   understood: string[];
   weak: string[];
   doubts: string[];
+  levelAndStyle?: string;
   updatedAt: string;
 }
 
@@ -383,6 +394,8 @@ export interface StudyCard {
   interval: number;
   ease: number;
   dueDate: string;
+  tags?: string[];
+  reviewCount?: number;
 }
 
 export interface StudyQuiz {
@@ -408,6 +421,17 @@ export interface StudyResource {
   title: string;
   url?: string;
   type: string;
+}
+
+export interface StudyResponseHistory {
+  id?: number;
+  itemId: number;
+  topicId?: number;
+  kind: 'plan' | 'learn' | 'practice' | 'doubt' | 'memory' | 'flashcards' | 'quiz' | 'cheat_sheet' | 'weekly_review' | 'other';
+  title: string;
+  prompt?: string;
+  response: string;
+  createdAt: string;
 }
 
 export interface Setting {
@@ -486,6 +510,7 @@ export class ProjectPilotDB extends Dexie {
   study_quizzes!: Table<StudyQuiz, number>;
   study_logs!: Table<StudyLog, number>;
   study_resources!: Table<StudyResource, number>;
+  study_response_history!: Table<StudyResponseHistory, number>;
 
   constructor() {
     super('projectpilot_web');
@@ -543,6 +568,10 @@ export class ProjectPilotDB extends Dexie {
       study_quizzes: '++id, itemId',
       study_logs: '++id, itemId, date',
       study_resources: '++id, itemId, type',
+    });
+
+    this.version(5).stores({
+      study_response_history: '++id, itemId, createdAt, kind, topicId',
     });
 
     this.on('populate', () => {

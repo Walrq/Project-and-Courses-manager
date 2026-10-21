@@ -25,6 +25,7 @@ import {
   Trash2,
   ChevronDown,
   BookOpen,
+  History,
 } from 'lucide-react';
 import { SearchModal } from './SearchModal';
 import { UndoToast } from './UndoToast';
@@ -143,6 +144,7 @@ export const Layout: React.FC = () => {
     { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { label: 'Projects', path: '/projects', icon: FolderGit2 },
     { label: 'Today', path: '/today', icon: CalendarCheck2 },
+    { label: 'Prompt History', path: '/history', icon: History },
     { label: 'Calendar', path: '/calendar', icon: Calendar },
     { label: 'Stats & Streak', path: '/stats', icon: BarChart3 },
     { label: 'Weekly Review', path: '/review', icon: Sparkles },
@@ -154,6 +156,7 @@ export const Layout: React.FC = () => {
   const mobileNavItems = [
     { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { label: 'Today', path: '/today', icon: CalendarCheck2 },
+    { label: 'History', path: '/history', icon: History },
     { label: 'Calendar', path: '/calendar', icon: Calendar },
     { label: 'Stats', path: '/stats', icon: BarChart3 },
     { label: 'Review', path: '/review', icon: Sparkles },

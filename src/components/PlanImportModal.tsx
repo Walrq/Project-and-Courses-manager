@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { db } from '../db/schema';
 import { sectionRepo } from '../db/repos/sectionRepo';
 import { partRepo } from '../db/repos/partRepo';
+import { promptRepo, responseRepo } from '../db/repos/promptRepo';
 import {
   parseImportText,
   autoFixJSONString,
-  type ImportedBreakdown,
-  type ImportedPlan,
   type ImportedPartItem,
   type ImportedSectionItem,
 } from '../core/planImport';
@@ -157,6 +156,16 @@ export const PlanImportModal: React.FC<Props> = ({
 
         showToast(`Imported ${previewData.parts.length} daily parts!`, 'success');
       }
+
+      const responseKind = previewData.type === 'breakdown' ? 'sections_import' : 'plan_import';
+      const promptId = await promptRepo.create({
+        projectId,
+        kind: responseKind,
+        body: `Saved AI ${previewData.type === 'breakdown' ? 'sections breakdown' : 'project plan'} import response`,
+        estTokens: Math.ceil(rawText.length / 4),
+        version: 1,
+      });
+      await responseRepo.create({ promptId, body: rawText.trim(), verdict: 'accepted' });
 
       onImportComplete?.();
       onClose();

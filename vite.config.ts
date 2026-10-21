@@ -1,24 +1,26 @@
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/Project-and-Courses-manager/',
+  base: '/',
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icons/*.png'],
       manifest: {
-        name: 'Progress Den - Daily Project & Study Planner',
-        short_name: 'Progress Den',
-        description: 'Turns any project into daily parts and generates context-rich prompts for any LLM. Fully offline, no AI APIs.',
+        name: 'ProjectPilot - Daily Project & LLM Prompt Planner',
+        short_name: 'ProjectPilot',
+        description:
+          'Turns any project into daily parts and generates context-rich prompts for any LLM. Fully offline, no AI APIs.',
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'any',
-        scope: '/Project-and-Courses-manager/',
-        start_url: '/Project-and-Courses-manager/',
+        scope: '/',
+        start_url: '/',
         icons: [
           {
             src: 'icons/icon-192.png',

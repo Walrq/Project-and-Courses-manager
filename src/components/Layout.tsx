@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db/schema';
 import { useUIStore } from '../store/uiStore';
@@ -214,7 +214,7 @@ export const Layout: React.FC = () => {
         <div className="space-y-4">
           {/* Logo & Workspace title */}
           <div className="flex items-center justify-between px-1.5 pt-1">
-            <div className="flex items-center gap-2.5">
+            <Link to="/" aria-label="Progress Den home" className="flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/10 border border-indigo-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(99,102,241,0.2)]">
                 <CheckCircle className="w-4 h-4 text-indigo-400" />
               </div>
@@ -222,7 +222,7 @@ export const Layout: React.FC = () => {
                 <h1 className="font-semibold text-xs leading-tight tracking-tight text-neutral-900 dark:text-[#f7f8f8]">Progress Den</h1>
                 <p className="text-[10px] text-neutral-400 dark:text-[#62666d] font-medium tracking-wide">Workspace</p>
               </div>
-            </div>
+            </Link>
 
             <button
               onClick={toggleTheme}
@@ -335,12 +335,12 @@ export const Layout: React.FC = () => {
       <main className="flex-1 flex flex-col min-w-0 pb-16 md:pb-0 overflow-y-auto max-h-screen">
         {/* Mobile Top Header */}
         <header className="md:hidden flex items-center justify-between px-4 py-2.5 border-b border-neutral-200 dark:border-white/[0.06] bg-white/80 dark:bg-[#0c0d12]/80 backdrop-blur-md sticky top-0 z-30">
-          <div className="flex items-center gap-2">
+          <Link to="/" aria-label="Progress Den home" className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
             <div className="w-6 h-6 rounded-md bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center">
               <CheckCircle className="w-3.5 h-3.5 text-indigo-400" />
             </div>
             <span className="font-semibold text-xs tracking-tight text-neutral-900 dark:text-white">Progress Den</span>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-1.5">
             <button

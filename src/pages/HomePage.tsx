@@ -4,6 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { ArrowRight, BookOpen, CalendarCheck2, Flame, FolderGit2 } from 'lucide-react';
 import { db } from '../db/schema';
 import { formatLocalDate } from '../core/scheduler';
+import { DailyTechBrief } from '../components/DailyTechBrief';
 
 function countStreak(dates: string[]): number {
   const completed = new Set(dates);
@@ -48,6 +49,10 @@ export const HomePage: React.FC = () => {
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">What are you working on?</h1>
         <p className="text-sm text-neutral-500 dark:text-[#8a8f98]">Choose a module to continue.</p>
+      </div>
+
+      <div className="max-w-4xl mx-auto w-full">
+        <DailyTechBrief />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">

@@ -32,6 +32,7 @@ import { UndoToast } from './UndoToast';
 import { setupUndoKeyboardListener } from '../core/undo';
 import { shouldTriggerReminder, sendDailyPartNotification } from '../core/notifications';
 import { settingsRepo } from '../db/repos/settingsRepo';
+import { downloadDailyAutomaticBackup } from '../core/autoBackup';
 
 export const Layout: React.FC = () => {
   const location = useLocation();
@@ -70,6 +71,14 @@ export const Layout: React.FC = () => {
 
   // Live query for active projects list
   const projects = useLiveQuery(() => db.projects.toArray(), []) || [];
+  const studyItemCount = useLiveQuery(() => db.study_items.count(), []) || 0;
+
+  // Download a safety backup once per day when the app is opened or data is added.
+  useEffect(() => {
+    void downloadDailyAutomaticBackup().catch((error) => {
+      console.error('Automatic backup failed:', error);
+    });
+  }, [projects.length, studyItemCount, location.pathname]);
 
   // Auto-select first project if activeProjectId is not set
   useEffect(() => {
@@ -133,7 +142,7 @@ export const Layout: React.FC = () => {
       installPrompt.prompt();
       const choice = await installPrompt.userChoice;
       if (choice.outcome === 'accepted') {
-        showToast('ProjectPilot installed as app!', 'success');
+        showToast('Progress Den installed as app!', 'success');
       }
     } else {
       showToast('To install, use your browser menu: "Install app" or "Add to Home Screen".', 'info');
@@ -210,7 +219,7 @@ export const Layout: React.FC = () => {
                 <CheckCircle className="w-4 h-4 text-indigo-400" />
               </div>
               <div>
-                <h1 className="font-semibold text-xs leading-tight tracking-tight text-neutral-900 dark:text-[#f7f8f8]">ProjectPilot</h1>
+                <h1 className="font-semibold text-xs leading-tight tracking-tight text-neutral-900 dark:text-[#f7f8f8]">Progress Den</h1>
                 <p className="text-[10px] text-neutral-400 dark:text-[#62666d] font-medium tracking-wide">Workspace</p>
               </div>
             </div>
@@ -330,7 +339,7 @@ export const Layout: React.FC = () => {
             <div className="w-6 h-6 rounded-md bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center">
               <CheckCircle className="w-3.5 h-3.5 text-indigo-400" />
             </div>
-            <span className="font-semibold text-xs tracking-tight text-neutral-900 dark:text-white">ProjectPilot</span>
+            <span className="font-semibold text-xs tracking-tight text-neutral-900 dark:text-white">Progress Den</span>
           </div>
 
           <div className="flex items-center gap-1.5">

@@ -72,7 +72,7 @@ SELECT * FROM users;
     const promptInput = {
       role: 'You are an elite developer.',
       project: {
-        name: 'ProjectPilot',
+        name: 'Progress Den',
         aiRules: 'Be precise',
       },
       memory: {

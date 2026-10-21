@@ -401,7 +401,7 @@ export const SearchModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <span className="flex items-center gap-1.5"><kbd className="linear-kbd">↵</kbd> Select</span>
             <span className="flex items-center gap-1.5"><kbd className="linear-kbd">esc</kbd> Close</span>
           </div>
-          <span className="text-[10px] text-[#62666d] font-mono">ProjectPilot</span>
+          <span className="text-[10px] text-[#62666d] font-mono">Progress Den</span>
         </div>
       </div>
     </div>

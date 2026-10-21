@@ -10,7 +10,7 @@ describe('Prompt builder', () => {
   const sampleInput = {
     role: 'You are an elite developer.',
     project: {
-      name: 'ProjectPilot',
+      name: 'Progress Den',
       description: 'Daily project planner',
       goal: 'Help users plan with AI',
       constraints: 'Offline first',

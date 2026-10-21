@@ -1,4 +1,4 @@
-# ProjectPilot Web
+# Progress Den
 
 > An installable offline-first Progressive Web App (PWA) that breaks any project into day-sized parts and generates context-rich prompts for any LLM.
 > **No backend. No AI APIs. No accounts. Everything runs locally in your browser.**
@@ -71,7 +71,7 @@ npm run preview
 
 ## 🌐 Deploying to GitHub Pages (Beginner's Guide)
 
-Because ProjectPilot is an entirely static, client-side PWA, you can host it for free on **GitHub Pages**, **Netlify**, or **Cloudflare Pages**.
+Because Progress Den is an entirely static, client-side PWA, you can host it for free on **GitHub Pages**, **Netlify**, or **Cloudflare Pages**.
 
 > ⚠️ **Privacy Notice**: The deployed web URL is public so your browser can download the app bundle. However, **your project data is 100% private** and stored exclusively in your local browser profile. Anyone visiting the URL will simply open their own blank local instance.
 
@@ -81,11 +81,11 @@ Because ProjectPilot is an entirely static, client-side PWA, you can host it for
    ```bash
    git init
    git add .
-   git commit -m "feat: initial commit of ProjectPilot Web"
+   git commit -m "feat: initial commit of Progress Den"
    ```
 
 2. **Create a GitHub Repository**:
-   - Go to [GitHub](https://github.com/new) and create a new repository (e.g., `projectpilot`).
+   - Go to [GitHub](https://github.com/new) and create a new repository (e.g., `progress-den`).
    - Do **not** initialize with a README, .gitignore, or license.
 
 3. **Push Code to GitHub**:
@@ -111,7 +111,7 @@ Because ProjectPilot is an entirely static, client-side PWA, you can host it for
 ### On Desktop (Chrome / Edge / Brave):
 1. Visit the app URL in your browser.
 2. Click the **"Install App"** button in the sidebar (or the install icon in your browser address bar).
-3. ProjectPilot opens in its own standalone, distraction-free window without browser toolbars.
+3. Progress Den opens in its own standalone, distraction-free window without browser toolbars.
 
 ### On iOS (Safari):
 1. Open the app in Safari.
@@ -129,7 +129,7 @@ Because ProjectPilot is an entirely static, client-side PWA, you can host it for
 1. **Native Folder Auto-Backup**:
    - In **Settings** -> **Automated Backup Folder**, click **Select Auto-Backup Folder**.
    - Pick any local directory on your disk (e.g. Dropbox, Google Drive folder, or local documents).
-   - ProjectPilot will automatically save timestamped snapshots directly to your disk!
+   - Progress Den will automatically save timestamped snapshots directly to your disk!
 2. **Manual JSON Export/Import**:
    - Navigate to **Settings** -> **Backup & Disaster Recovery**.
    - Click **"Export Backup File (.json)"** to download an immediate snapshot.

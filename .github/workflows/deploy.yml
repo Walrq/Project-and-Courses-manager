@@ -1,4 +1,4 @@
-name: Deploy ProjectPilot to GitHub Pages
+name: Deploy Progress Den to GitHub Pages
 
 on:
   push:

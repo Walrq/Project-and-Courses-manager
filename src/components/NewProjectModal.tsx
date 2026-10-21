@@ -116,7 +116,7 @@ export const NewProjectModal: React.FC<Props> = ({ isOpen, onClose, onCreated })
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g., ProjectPilot, My Indie Game, AI Engine"
+                  placeholder="e.g., My Indie Game, AI Engine, Learning Plan"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-lg border border-white/[0.08] bg-[#14161f] text-[#f7f8f8] placeholder-[#626670] text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50"

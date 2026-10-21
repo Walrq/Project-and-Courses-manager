@@ -1,9 +1,9 @@
 # Architectural Decisions Log (DECISIONS.md)
 
-This document tracks all foundational architecture and technology choices made for ProjectPilot Web.
+This document tracks all foundational architecture and technology choices made for Progress Den.
 
 ## Decision 1: Target Architecture — Installable Web App (PWA) with Offline-First IndexedDB
-- **Context**: The user specified the revised implementation plan transitioning ProjectPilot into an installable website (PWA) that runs 100% locally in the browser with zero backend, zero AI API keys, and zero telemetry.
+- **Context**: The user specified the revised implementation plan transitioning the project into an installable website (PWA) that runs 100% locally in the browser with zero backend, zero AI API keys, and zero telemetry.
 - **Choice**: Scaffolded Vite + React 18 + TypeScript + Tailwind CSS with `vite-plugin-pwa` generating full offline Workbox precaching and standalone app manifest.
 - **Rationale**: Eliminates OS toolchain dependencies (Rust, MSVC C++ Build Tools), allows instant execution on Windows, macOS, Linux, and mobile devices, and guarantees data privacy.
 

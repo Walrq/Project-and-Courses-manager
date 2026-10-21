@@ -22,7 +22,7 @@ export function sendDailyPartNotification(partTitle: string, projectName: string
   }
 
   try {
-    new Notification(`ProjectPilot — Ready for Today's Work`, {
+    new Notification(`Progress Den — Ready for Today's Work`, {
       body: `"${partTitle}" in ${projectName} is waiting for you!`,
       icon: '/icons/icon-192.png',
       tag: 'projectpilot-daily-reminder',

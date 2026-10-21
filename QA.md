@@ -1,6 +1,6 @@
 # QA Checklist & Manual Test Plan (QA.md)
 
-Use this checklist to verify ProjectPilot Web behavior across desktop, tablet, and mobile browsers.
+Use this checklist to verify Progress Den behavior across desktop, tablet, and mobile browsers.
 
 ## 1. Foundation & Navigation
 - [ ] **Initial Load**: App loads cleanly at `http://localhost:5173/` or static host with no console errors.
@@ -75,7 +75,7 @@ Use this checklist to verify ProjectPilot Web behavior across desktop, tablet, a
 ## 7. Settings, Backup & Restore
 - [ ] Open **Settings** tab.
 - [ ] Verify **Storage Usage** shows current IndexedDB megabytes and quota.
-- [ ] Click **"Export Backup File (.json)"**. Browser downloads a file named `projectpilot-backup-YYYY-MM-DD.json`.
+- [ ] Click **"Export Backup File (.json)"**. Browser downloads a file named `progress-den-backup-YYYY-MM-DD.json`.
 - [ ] Open downloaded JSON in text editor: confirm all projects, sections, parts, and settings are present.
 - [ ] Click **"Select Backup File to Restore"**. Upload the backup file. Confirm replacement dialog.
 - [ ] Database reloads with 100% data fidelity.
@@ -130,17 +130,17 @@ Use this checklist to verify ProjectPilot Web behavior across desktop, tablet, a
 - [ ] **Native Folder Auto-Backup (File System Access API)**:
   - In Settings tab, locate the "Auto-Save to Local Folder" section.
   - Click "Select Backup Folder" and grant permission to a directory on disk.
-  - Click "Save Backup to Folder Now". Verify file `projectpilot-backup-YYYY-MM-DD.json` is created on disk.
+  - Click "Save Backup to Folder Now". Verify file `progress-den-backup-YYYY-MM-DD.json` is created on disk.
   - Verify last backup date updates to today.
   - Verify weekly backup reminder warning banner disappears once backed up.
 - [ ] **Daily Check-In Reminders & Notifications**:
   - In Settings tab, toggle "Daily Check-In Reminders" to Enabled.
   - Browser prompts for notification permission; click "Allow". Permission status updates to `granted`.
-  - Click "Test Notification": browser shows test notification *"ProjectPilot — Ready for Today's Work"*.
+  - Click "Test Notification": browser shows test notification *"Progress Den — Ready for Today's Work"*.
   - Change reminder time to desired hour/minute. Setting persists across reloads.
 - [ ] **PWA Standalone Installation**:
   - In Chromium browsers, click "Install App" in sidebar or Settings.
-  - Native installation prompt appears to install ProjectPilot as a standalone desktop/mobile app.
+  - Native installation prompt appears to install Progress Den as a standalone desktop/mobile app.
   - Verify all touch targets on mobile view are $\ge 44\text{px}$.
 
 ## 10. Walkthrough Import Parsers & Data Model (Add-on 1: Sub-phase A1)

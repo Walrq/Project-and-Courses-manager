@@ -1,6 +1,11 @@
 /**
  * Utilities for File System Access API and Auto-Backup.
  */
+import { exportDatabaseToJSON, downloadBackupFile } from '../db/backup';
+import { settingsRepo } from '../db/repos/settingsRepo';
+import { db } from '../db/schema';
+
+let automaticBackupTask: Promise<boolean> | null = null;
 
 export function isFileSystemAccessSupported(): boolean {
   return typeof window !== 'undefined' && 'showDirectoryPicker' in window;
@@ -32,7 +37,7 @@ export async function saveBackupToDirectory(
   customFilename?: string
 ): Promise<{ success: boolean; filename: string }> {
   const dateStr = new Date().toISOString().split('T')[0];
-  const filename = customFilename || `projectpilot-backup-${dateStr}.json`;
+  const filename = customFilename || `progress-den-backup-${dateStr}.json`;
 
   const fileHandle = await dirHandle.getFileHandle(filename, { create: true });
   const writable = await (fileHandle as any).createWritable();
@@ -59,4 +64,35 @@ export function isBackupOverdue(
   const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
   return diffDays >= thresholdDays;
+}
+
+/**
+ * Downloads one automatic backup per local calendar day when the app is opened.
+ * Browsers may ask the user to allow automatic downloads for this site.
+ */
+export function downloadDailyAutomaticBackup(): Promise<boolean> {
+  if (automaticBackupTask) return automaticBackupTask;
+  automaticBackupTask = createDailyAutomaticBackup();
+  void automaticBackupTask.then(
+    () => { automaticBackupTask = null; },
+    () => { automaticBackupTask = null; }
+  );
+  return automaticBackupTask;
+}
+
+async function createDailyAutomaticBackup(): Promise<boolean> {
+  const today = new Date().toLocaleDateString('en-CA');
+  if ((await settingsRepo.get('last_automatic_backup_date')) === today) return false;
+
+  const [projectCount, studyItemCount] = await Promise.all([
+    db.projects.count(),
+    db.study_items.count(),
+  ]);
+  if (projectCount + studyItemCount === 0) return false;
+
+  const json = await exportDatabaseToJSON();
+  downloadBackupFile(json, `progress-den-auto-backup-${today}.json`);
+  await settingsRepo.set('last_automatic_backup_date', today);
+  await settingsRepo.set('last_backup_date', new Date().toISOString());
+  return true;
 }

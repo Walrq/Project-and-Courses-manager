@@ -355,6 +355,9 @@ export const SettingsPage: React.FC = () => {
 
       {/* Backup and Restore */}
       <div className="linear-card p-5 space-y-4">
+        <p className="text-xs text-neutral-400">
+          Progress Den automatically downloads one backup each day when you open the app and have saved project or study data. Your browser may ask you to allow automatic downloads; files go to its usual Downloads location.
+        </p>
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-200">Backup & Disaster Recovery</h2>
           {lastBackupDate && (
@@ -528,7 +531,7 @@ export const SettingsPage: React.FC = () => {
         <div className="linear-card p-5 space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-200">Install ProjectPilot App</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-200">Install Progress Den App</h2>
               <p className="text-[11px] text-neutral-400 mt-0.5">
                 Install as a standalone desktop or mobile application for quick access and full offline reliability.
               </p>
@@ -538,7 +541,7 @@ export const SettingsPage: React.FC = () => {
                 if (installPrompt) {
                   installPrompt.prompt();
                 } else {
-                  showToast('Use browser menu: "Install ProjectPilot"', 'info');
+                  showToast('Use browser menu: "Install Progress Den"', 'info');
                 }
               }}
               className="linear-btn-primary !text-xs shadow-linear-glow"

@@ -173,9 +173,9 @@ export async function exportDatabaseToJSON(): Promise<string> {
   return JSON.stringify(payload, null, 2);
 }
 
-export function downloadBackupFile(jsonString: string): void {
+export function downloadBackupFile(jsonString: string, customFilename?: string): void {
   const dateStr = new Date().toISOString().split('T')[0];
-  const filename = `projectpilot-backup-${dateStr}.json`;
+  const filename = customFilename || `progress-den-backup-${dateStr}.json`;
   const blob = new Blob([jsonString], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');

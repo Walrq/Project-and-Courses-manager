@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icons/*.png'],
       manifest: {
-        name: 'ProjectPilot - Daily Project & LLM Prompt Planner',
-        short_name: 'ProjectPilot',
+        name: 'Progress Den - Daily Project & Study Planner',
+        short_name: 'Progress Den',
         description: 'Turns any project into daily parts and generates context-rich prompts for any LLM. Fully offline, no AI APIs.',
         theme_color: '#0f172a',
         background_color: '#0f172a',

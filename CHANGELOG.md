@@ -1,6 +1,6 @@
 # Changelog (CHANGELOG.md)
 
-All notable changes to ProjectPilot Web will be documented in this file.
+All notable changes to Progress Den will be documented in this file.
 
 ## [Add-on Pack 2: Productivity, Developer Tools & Quality of Life] - 2026-10-20
 
@@ -190,4 +190,4 @@ All notable changes to ProjectPilot Web will be documented in this file.
   - **Today Screen (Context Loop Core)**: Part checklist with interactive step completion, 3-step prompt execution stepper (Generate prompt with live preview, token counter, and one-click copy; Paste LLM response with verdict buttons; Finish Day with daily note and memory append).
   - **Calendar**: Interactive monthly view displaying work days, rest markers, done/planned/skipped parts, and day details drawer.
   - **Templates**: Prompt template editor, reset to default, unknown variable detector, and variable reference table.
-  - **Settings & Data Safety**: Storage quota usage estimate, eviction protection request (`navigator.storage.persist()`), export backup JSON (`projectpilot-backup-YYYY-MM-DD.json`), and restore backup with Zod schema validation.
+  - **Settings & Data Safety**: Storage quota usage estimate, eviction protection request (`navigator.storage.persist()`), export backup JSON (`progress-den-backup-YYYY-MM-DD.json`), and restore backup with Zod schema validation.

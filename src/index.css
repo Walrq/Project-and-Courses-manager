@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply m-0 p-0 font-sans tracking-[-0.01em];
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Linear Ultra-Refined Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300/60 dark:bg-white/[0.12] rounded-full;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-400 dark:bg-white/[0.25];
+}
+
+/* Linear Glass & Card Utilities */
+.linear-card {
+  @apply relative rounded-xl border border-neutral-200/80 dark:border-white/[0.08] bg-white dark:bg-[#111318]/90 backdrop-blur-md shadow-sm dark:shadow-linear-card transition-all duration-150;
+}
+
+.linear-card-hover {
+  @apply linear-card hover:border-neutral-300 dark:hover:border-white/[0.14] hover:bg-neutral-50/50 dark:hover:bg-[#151821]/90;
+}
+
+.linear-surface {
+  @apply rounded-xl border border-neutral-200/80 dark:border-white/[0.07] bg-neutral-50/50 dark:bg-[#0e1015]/80;
+}
+
+/* Linear Glowing Accent Button */
+.linear-btn-primary {
+  @apply inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-medium rounded-lg text-white bg-gradient-to-b from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 active:scale-[0.98] border border-indigo-400/30 shadow-[0_1px_2px_rgba(0,0,0,0.2),0_0_16px_rgba(99,102,241,0.25)] transition-all duration-150;
+}
+
+.linear-btn-secondary {
+  @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg text-neutral-700 dark:text-[#d0d3d8] bg-white dark:bg-white/[0.04] hover:bg-neutral-100 dark:hover:bg-white/[0.08] active:scale-[0.98] border border-neutral-200 dark:border-white/[0.08] transition-all duration-150;
+}
+
+/* Linear Keyboard Shortcuts Pill */
+.linear-kbd {
+  @apply px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-neutral-100 dark:bg-white/[0.06] border border-neutral-200 dark:border-white/[0.1] text-neutral-500 dark:text-[#8a8f98];
+}
+

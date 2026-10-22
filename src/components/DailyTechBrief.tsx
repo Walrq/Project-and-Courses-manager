@@ -134,7 +134,7 @@ export const DailyTechBrief: React.FC = () => {
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-500 dark:text-cyan-400">Daily Tech Brief · {new Date(`${today}T12:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
               <h2 id="daily-tech-brief-title" className="mt-1 text-sm font-semibold text-neutral-900 dark:text-[#f7f8f8]">
-                {brief ? brief.story.title : conceptTitle}
+                {brief ? brief.story.title : 'Tech concept of the day'}
               </h2>
             </div>
             {isLoading && <RefreshCw className="w-3.5 h-3.5 text-neutral-500 animate-spin shrink-0" aria-label="Loading headline" />}
@@ -143,9 +143,14 @@ export const DailyTechBrief: React.FC = () => {
             {brief
               ? `A story from Hacker News${brief.story.score != null ? ` · ${brief.story.score} points` : ''}${brief.story.descendants != null ? ` · ${brief.story.descendants} comments` : ''}.`
               : usingFallback
-                ? `${conceptDescription} Live headlines will appear when you are online.`
-                : conceptDescription}
+                ? 'Live headlines will appear when you are online.'
+                : 'A quick idea to add to your technical toolkit.'}
           </p>
+          <div className="mt-3 rounded-lg border border-cyan-500/10 bg-cyan-500/[0.04] p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">Concept of the day</p>
+            <h3 className="mt-1 text-xs font-semibold text-neutral-900 dark:text-[#f7f8f8]">{conceptTitle}</h3>
+            <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-[#a1a6af]">{conceptDescription}</p>
+          </div>
           {brief && (
             <a href={storyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 mt-2 text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-500">
               Read story <ExternalLink className="w-3 h-3" />

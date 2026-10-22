@@ -111,8 +111,10 @@ export const TodayPage: React.FC = () => {
   // Today's scheduled part
   const todayPart = useMemo(() => {
     const exactToday = allParts.find((p) => p.plannedDate === todayStr && !p.isRest);
-    if (exactToday) return exactToday;
-    return allParts.find((p) => p.status === 'planned' && !p.isRest) || null;
+    // Once today's part is complete, keep the work moving by opening the next
+    // unfinished part (even if its original schedule date is later).
+    if (exactToday?.status === 'planned') return exactToday;
+    return allParts.find((p) => p.status === 'planned' && !p.isRest) || exactToday || null;
   }, [allParts, todayStr]);
 
   const steps = useLiveQuery(async () => {
